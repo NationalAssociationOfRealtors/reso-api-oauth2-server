@@ -1,0 +1,176 @@
+/*
+* RESO API OAuth2 CSS definition
+*/
+
+html, body {
+  height: 100%;
+  margin: 0px;
+}
+
+body {
+  background: #cccccc; /* Old browsers */
+  background: -moz-linear-gradient(top,  #cccccc 0%, #888888 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cccccc), color-stop(100%,#888888)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #cccccc 0%,#888888 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #cccccc 0%,#888888 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #cccccc 0%,#888888 100%); /* IE10+ */
+  background: linear-gradient(top,  #cccccc 0%,#888888 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#888888',GradientType=0 ); /* IE6-9 */
+  font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+  font-size: 16px;
+  color: #444;
+}
+
+/*
+* page layout 
+*/
+#page_title {
+  margin: 0 auto 0 auto;
+  padding-top: 20px; 
+  padding-bottom: 40px;
+  font-size: 24px;
+  text-align: center;
+  width: 700px;
+}
+#page_body {
+  margin: 0 auto 0 auto;
+  padding-bottom: 40px;
+  text-align: center;
+  width: 700px;
+}
+.page_note {
+  margin: 0 auto 0 auto;
+  text-align: center;
+  width: 700px;
+}
+.page_footer {
+  margin: 0 auto 0 auto;
+  font-size: 14px;
+  text-align: center;
+  width: 700px;
+}
+
+/*
+* main menu 
+*/
+#main_menu {
+  margin: 20px auto 20px auto;
+  width: 400px;
+  border: 3px solid #999999;
+  border-radius: 20px;
+  background-color: #eeeeee;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+.menu_divider {
+  font-size: 18px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.menu_item {
+  padding-left: 54px;
+  padding-bottom: 10px;
+/*
+  padding-top: 10px;
+  padding-top: 20px;
+*/
+  text-align: left;
+}
+
+/*
+* registration form
+*/
+#main_form {
+  margin: 20px auto 20px auto;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  border: 3px solid #999999;
+  border-radius: 20px;
+  background-color: #eeeeee;
+  width: 580px;
+}
+.form_button {
+  font-size: 14px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+#simple_form_table {
+  padding-left: 160px;
+}
+#form_table {
+  padding-left: 20px;
+}
+.form_table_title {
+  width: 140px;
+  text-align: left;
+}
+.form_table_value {
+  text-align: left;
+}
+.form_table_description {
+  font-size: 12px;
+  width: 300px;
+  color: red;
+  text-align: left;
+  padding-left: 20px;
+}
+
+/*
+* registration results 
+*/
+#results_layout {
+  margin: 20px auto 20px auto;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  border: 3px solid #999999;
+  border-radius: 20px;
+  background-color: #eeeeee;
+  width: 640px;
+}
+#results_table {
+  margin-top: 20px;
+  margin-left: auto;
+  margin-bottom: 0px;
+  margin-right: auto;
+}
+.results_table_title {
+  width: 120px;
+  text-align: left;
+}
+.results_table_value {
+  text-align: left;
+}
+.results_button {
+  font-size: 14px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-bottom: 20px;
+  margin-right: auto;
+}
+
+/*
+* errors 
+*/
+.error_text {
+  font-size: 16px;
+  margin: 20px auto 20px auto;
+  padding-top: 20px;
+  border: 3px solid #999999;
+  border-radius: 20px;
+  background-color: #eeeeee;
+  width: 400px;
+}
+.error_highlight {
+  font-size: 18px;
+  color: red;
+}
+.error_list {
+  text-align: left;
+}
+

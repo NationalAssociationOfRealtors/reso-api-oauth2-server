@@ -1,0 +1,50 @@
+{
+  "name": "reso-api-oauth2",
+  "description": "A RESO API OAuth2 Server",
+  "version": "0.0.1",
+  "homepage": "http://crt.blogs.realtor.org",
+  "author": {
+    "name": "Center for REALTOR Technology",
+    "url": "http://crt.blogs.realtor.org"
+  },
+  "repository": {
+    "url": ""
+  },
+  "keywords": [
+    "reso",
+    "reso api",
+    "oauth",
+    "oauth2",
+    "authentication",
+    "mls"
+  ],
+  "dependencies": {
+    "basic-auth": "=1.0.0",
+    "body-parser": "=1.2.0",
+    "faker": "=1.1.0",
+    "express": "=4.8.4",
+    "just.randomstring": "=0.1.1",
+    "mongoose": "=3.8.14",
+    "morgan": "=1.2.2",
+    "nconf": "=0.6.9",
+    "oauthorize": "=0.1.0",
+    "oauth2orize": "=1.0.1",
+    "passport": "=0.2.0",
+    "passport-http": "=0.2.2",
+    "passport-oauth2-client-password": "=0.1.1",
+    "passport-oauth2-code": "=0.1.1",
+    "passport-http-bearer": "=1.0.1",
+    "serve-favicon": "=2.0.1",
+    "valid-url": "=1.0.9",
+    "winston": "=0.7.3"
+  },
+  "engines": {
+    "node": ">=0.10.28"
+  },
+  "contributors": [
+    {
+      "name": "Mark Lesswing"
+    }
+  ],
+  "readmeFilename": "README.md"
+}

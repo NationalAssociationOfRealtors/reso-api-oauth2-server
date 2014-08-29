@@ -1,0 +1,67 @@
+
+GUIDES/RESOURCES
+
+http://aleksandrov.ws/2013/09/12/restful-api-with-nodejs-plus-mongodb/
+http://tesoriere.com/2011/10/10/node.js-getting-oauth-up-and-working-using-express.js-and-railway.js/
+
+OAuth2:
+http://tools.ietf.org/html/rfc6749
+http://tutorials.jenkov.com/oauth2/authorization-code-request-response.html
+http://aaronparecki.com/articles/2012/07/29/1/oauth2-simplified
+
+Bearer:
+
+http://tools.ietf.org/html/rfc6750
+
+WORKFLOWS
+
+1) Register Clients 
+
+node dataGen.js
+
+  clientName: "OurService iOS client v1"
+  clientId: "mobileV1"
+  clientSecret:"abc123456"
+    code: "A123"
+    redirectURI: "localhost/reso"
+
+  clientName: "OurService iOS client v1"
+  clientId: "mobileV1"
+  clientSecret:"abc123456"
+    username: "andrey"
+    password: "simplepassword"
+
+2) Using Form:
+
+node resetData.js
+
+client_name: Easy RESO
+client_id: ez_reso
+redirect_uri: http://crt.realtors.org
+
+3) request code
+
+http POST https://localhost:1340/oauth/auth response_type=code client_id=ez_reso redirect_uri=http://crt.realtors.org scope=optional state=optional --verify=no
+
+code:
+state: optional, but must return if sent
+
+4) Generate Tokens
+ package: httpie
+
+
+http POST https://localhost:1340/oauth/token grant_type=authorization_code client_id=mobileV1 client_secret=abc123456 code=a123b456 redirect_uri=localhost/reso --verify=no
+
+//http POST https://localhost:1340/oauth/token grant_type=authorization_code client_id=ez_reso client_secret=abc123456 code=a123b456 redirect_uri=http://crt.realtors.org --verify=no
+// http POST https://localhost:1340/oauth/token grant_type=password client_id=mobileV1 client_secret=abc123456 username=andrey password=simplepassword --verify=no
+//http POST https://localhost:1340/oauth/token grant_type=authorization_code client_id=0vd6B4GLbY8PVBll client_secret=dory code=Zu1EYwOy redirect_uri=here --verify=no
+
+5) Refresh Tokens
+
+http POST http://localhost:1340/oauth/token grant_type=refresh_token client_id=mobileV1 client_secret=abc123456 refresh_token=TOKEN
+
+6) Verify Tokens
+
+http http://localhost:1340/oauth/userinfo Authorization:'Bearer TOKEN'
+
+http https://localhost:1340/oauth/userinfo Authorization:'Bearer TOKEN' --verify=no

@@ -1,0 +1,48 @@
+Certificate:
+    Data:
+        Version: 1 (0x0)
+        Serial Number: 1 (0x1)
+        Signature Algorithm: md5WithRSAEncryption
+        Issuer: C=us, ST=il, L=st. charles, O=test, CN=127.0.0.1/emailAddress=mark@lesswing.com
+        Validity
+            Not Before: May  2 20:18:25 2010 GMT
+            Not After : May  2 20:18:25 2011 GMT
+        Subject: C=us, ST=illinois, L=st. charles, O=test, CN=127.0.0.1/emailAddress=mark@lesswing.com
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+            RSA Public Key: (1024 bit)
+                Modulus (1024 bit):
+                    00:c8:6b:4c:aa:2b:ea:02:df:b3:6b:aa:28:b4:9b:
+                    52:a0:10:e0:6d:dc:e7:35:31:36:de:b2:81:05:ee:
+                    43:be:2d:29:fb:d5:00:b9:a2:19:2a:d8:42:21:a9:
+                    b2:27:96:fc:22:b3:bd:cb:9e:c4:c9:4d:0e:73:e1:
+                    db:65:1e:25:e5:91:98:d4:95:c8:d3:d8:a8:7e:b5:
+                    0c:ee:9d:3e:0c:d9:ef:46:26:86:d9:97:41:51:ce:
+                    a8:17:c0:0f:2d:b9:81:f6:65:83:8a:b0:ea:78:c2:
+                    8b:63:46:b6:90:fa:fe:1e:2e:25:f8:36:33:0a:c9:
+                    36:9c:4f:fc:66:a0:4e:c4:ab
+                Exponent: 65537 (0x10001)
+    Signature Algorithm: md5WithRSAEncryption
+        77:3f:2b:41:68:12:92:27:55:5a:f3:da:e6:01:cf:3f:df:8e:
+        cf:22:7c:08:fb:d3:11:6d:41:85:60:3b:2e:1d:4f:33:d2:34:
+        b6:db:79:62:8f:57:f0:ab:9c:e1:88:f1:5d:ac:1c:a5:6b:fa:
+        f7:f2:31:2a:b4:dd:db:9f:ab:01:d1:34:32:c1:a4:c5:37:1f:
+        e2:22:25:bb:df:2b:b9:1c:e9:e0:c8:e8:b3:5e:12:61:45:c0:
+        f0:d6:f5:82:b5:f3:e7:92:12:4f:b7:4b:44:78:97:26:1d:98:
+        a7:d7:7a:dc:7d:4c:4b:1d:6b:59:c3:78:54:97:c9:71:20:25:
+        26:7e
+-----BEGIN CERTIFICATE-----
+MIICXzCCAcgCAQEwDQYJKoZIhvcNAQEEBQAwdTELMAkGA1UEBhMCdXMxCzAJBgNV
+BAgTAmlsMRQwEgYDVQQHEwtzdC4gY2hhcmxlczENMAsGA1UEChMEdGVzdDESMBAG
+A1UEAxMJMTI3LjAuMC4xMSAwHgYJKoZIhvcNAQkBFhFtYXJrQGxlc3N3aW5nLmNv
+bTAeFw0xMDA1MDIyMDE4MjVaFw0xMTA1MDIyMDE4MjVaMHsxCzAJBgNVBAYTAnVz
+MREwDwYDVQQIEwhpbGxpbm9pczEUMBIGA1UEBxMLc3QuIGNoYXJsZXMxDTALBgNV
+BAoTBHRlc3QxEjAQBgNVBAMTCTEyNy4wLjAuMTEgMB4GCSqGSIb3DQEJARYRbWFy
+a0BsZXNzd2luZy5jb20wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMhrTKor
+6gLfs2uqKLSbUqAQ4G3c5zUxNt6ygQXuQ74tKfvVALmiGSrYQiGpsieW/CKzvcue
+xMlNDnPh22UeJeWRmNSVyNPYqH61DO6dPgzZ70YmhtmXQVHOqBfADy25gfZlg4qw
+6njCi2NGtpD6/h4uJfg2MwrJNpxP/GagTsSrAgMBAAEwDQYJKoZIhvcNAQEEBQAD
+gYEAdz8rQWgSkidVWvPa5gHPP9+OzyJ8CPvTEW1BhWA7Lh1PM9I0ttt5Yo9X8Kuc
+4YjxXawcpWv69/IxKrTd25+rAdE0MsGkxTcf4iIlu98ruRzp4Mjos14SYUXA8Nb1
+grXz55IST7dLRHiXJh2Yp9d63H1MSx1rWcN4VJfJcSAlJn4=
+-----END CERTIFICATE-----
