@@ -16,8 +16,10 @@ function resoOAuth2(){
 
 var app = express();
 
-//app.use(favicon(__dirname + '/public/images/reso.ico', { maxAge: 2592000000 }));
-app.use(favicon("./public/images/reso.ico", { maxAge: 2592000000 }));
+//var pathToPublic = __dirname;
+var pathToPublic = ".";
+
+app.use(favicon(pathToPublic + '/public/images/reso.ico', { maxAge: 2592000000 }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan("dev")); // log all requests
@@ -52,8 +54,7 @@ app.get("/grant_client.html", auth, function(req, res, next){
   ui.grantClient (req, res, config);
 });
 
-//app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(path.join(".", "public")));
+app.use(express.static(path.join(pathToPublic, "public")));
 
 //
 // forms processing
@@ -84,7 +85,17 @@ app.get("/oauth", function (req, res) {
   res.send("RETS Web API OAuth2 Server is running");
 });
 
+app.get("/oauth/auth_denied", function (req, res) {
+  res.status(403);
+  res.send("Subscriber has denied access");
+});
+
 app.post("/oauth/auth", auth, function (req, res) {
+// http POST https://localhost:1340/oauth/auth response_type=code client_id=ez_reso redirect_uri=http://crt.realtors.org scope=optional state=optional --verify=no
+  ui.confirmGrant (req, res, config);
+});
+
+app.post("/oauth/auth_confirmed", auth, function (req, res) {
 // http POST https://localhost:1340/oauth/auth response_type=code client_id=ez_reso redirect_uri=http://crt.realtors.org scope=optional state=optional --verify=no
   ui.registerGrant (req, res, config);
 });

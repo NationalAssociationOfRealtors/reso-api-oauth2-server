@@ -293,6 +293,59 @@ log.info("New code - %s:%s:%s",authorizationCode.code,authorizationCode.redirect
   });
 };
 
+function confirmGrant (req, res, config) {
+
+//
+// subscriber name and password
+//
+  var authorizedUser = readAuthHeader(req.headers);
+
+console.dir(req.body.client_id);
+console.dir(req.body.redirect_uri);
+
+  var target = baseTarget(config);
+console.dir(target);
+
+//
+// generate confirmation page
+//
+  var results_top = 
+"<!DOCTYPE html>" +
+"<html>" +
+"<head>" +
+"<title>RETS Web API OAuth2 Authentication</title>" +
+"<link rel='stylesheet' href='" + target + "/css/oauth2.css'/>" +
+"</head>" +
+"<body>";
+
+  var body = 
+"<div id='page_body'>" +
+"<form id='confirmation_form' name='input' action='" + target + "/oauth/auth_confirmed' method='post'>" +
+"<table id='confirmation_table'>" +
+//"<tr><td class='confirmation_title'>Third Party Request Received</td></tr>" +
+"<tr><td class='confirmation_text'>Grant access to your Subscriber Account?</td></tr>" +
+"</table>" +
+"<input type='hidden' name='client_id' value='" + req.body.client_id + "'/>" +
+"<input type='hidden' name='redirect_uri' value='" + req.body.redirect_uri + "'/>" +
+"<input class='yes_button' type='submit' value='YES'/>&nbsp;&nbsp;" +
+"<input type='button' class='no_button' onclick='location.href=&#39;" + target + "/oauth/auth_denied" + "&#39;' value='NO'>" +
+"<div class='confirmation_subtitle'>Consider the implications of this action</div>" +
+"</form> " +
+"</div>";
+
+  var results_bottom =
+"<div class='page_footer'>An open source project of the Center for REALTOR&reg; Technology (CRT)</div>" +
+"<div class='page_footer'>Visit the <a href='http://crt.blogs.realtor.org'>CRT blog</a> for more technology projects</div>" +
+"</body>" +
+"</html>";
+
+  res.setHeader("Cache-Control", "public, max-age=0");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Connection", "close");
+  res.send(results_top+body+results_bottom);
+
+};
+
 //------------
 // Register Grant 
 // http POST https://localhost:1340/oauth/auth response_type=code client_id=ez_reso redirect_uri=http://crt.realtors.org scope=optional state=optional --verify=no
@@ -395,6 +448,7 @@ fs.readFile("./templates/results_bottom.tmpl", "utf8", function(err, data) {
 //------------
 // ui endpoint
 //------------
+exports.confirmGrant = confirmGrant;
 exports.grantClient = grantClient;
 exports.registerClient = registerClient;
 exports.enableClient = enableClient;
@@ -540,7 +594,19 @@ function formatPlaceholder(res, target) {
   res.send(results_template_top+body+results_template_bottom);
 }
 
+function baseTarget(config) {
+  var target;
+  if (config.get("encrypted_traffic")) {
+    target = "https://";
+  } else {
+    target = "https://";
+  }
+  target += config.get("domain") + ":" + config.get("port");
+  return target;
+}
+
 function returnTarget(config) {
+/*
   var target;
   if (config.get("encrypted_traffic")) {
     target = "https://";
@@ -549,6 +615,8 @@ function returnTarget(config) {
   }
   target += config.get("domain") + ":" + config.get("port") + "/" + config.get("entry_point");
   return target;
+*/
+  return baseTarget(config) + "/" + config.get("entry_point");
 }
 
 function readAuthHeader(headers) {
