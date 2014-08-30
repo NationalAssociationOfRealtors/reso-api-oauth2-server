@@ -65,7 +65,6 @@ log.info("redirect_uri: " + redirectURI + " is not valid for code: " + code);
 
 passport.use(new BearerStrategy(
   function(accessToken, done) {
-console.dir(accessToken);
     AccessTokenModel.findOne({ token: accessToken }, function(err, token) {
       if (err) { return done(err); }
       if (!token) { return done(null, false); }
