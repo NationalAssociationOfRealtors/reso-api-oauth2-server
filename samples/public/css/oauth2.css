@@ -9,13 +9,13 @@ html, body {
 
 body {
   background: #cccccc; /* Old browsers */
-  background: -moz-linear-gradient(top,  #cccccc 0%, #888888 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cccccc), color-stop(100%,#888888)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  #cccccc 0%,#888888 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  #cccccc 0%,#888888 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  #cccccc 0%,#888888 100%); /* IE10+ */
-  background: linear-gradient(top,  #cccccc 0%,#888888 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#888888',GradientType=0 ); /* IE6-9 */
+  background: -moz-linear-gradient(top,  #ffffcc 0%, #ffff99 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffcc), color-stop(100%,#ffff99)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #ffffcc 0%,#ffff99 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #ffffcc 0%,#ffff99 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #ffffcc 0%,#ffff99 100%); /* IE10+ */
+  background: linear-gradient(top,  #ffffcc 0%,#ffff99 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffcc', endColorstr='#ffff99',GradientType=0 ); /* IE6-9 */
   font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
   font-size: 16px;
   color: #444;
@@ -70,10 +70,6 @@ body {
 .menu_item {
   padding-left: 54px;
   padding-bottom: 10px;
-/*
-  padding-top: 10px;
-  padding-top: 20px;
-*/
   text-align: left;
 }
 
@@ -94,7 +90,8 @@ body {
   font-size: 14px;
   margin-top: 20px;
   margin-left: auto;
-  margin-right: auto;
+  margin-right: 10px;
+  margin-bottom: 0px;
   text-align: center;
 }
 
@@ -150,9 +147,49 @@ body {
   font-size: 14px;
   margin-top: 20px;
   margin-left: auto;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
   margin-right: auto;
 }
+
+/*
+* confirmation
+*/
+#confirmation_form {
+  margin: 40px auto 20px auto;
+  padding-top: 10px;
+  padding-left: 20px;
+  padding-bottom: 10px;
+  border: 3px solid #999999;
+  border-radius: 20px;
+  background-color: #eeeeee;
+  width: 400px;
+}
+#confirmation_table {
+  padding-left: 10px;
+}
+.confirmation_text {
+  padding-top: 20px;
+  font-size: 18px;
+}
+.yes_button {
+  font-size: 28px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: 10px;
+  text-align: center;
+  color: green;
+  background-color: white;
+}
+.no_button {
+  font-size: 28px;
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-bottom: 20px;
+  margin-right: auto;
+  color: red;
+  background-color: white;
+}
+
 
 /*
 * errors 
@@ -172,5 +209,12 @@ body {
 }
 .error_list {
   text-align: left;
+}
+.error_button {
+  font-size: 14px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-bottom: 10px;
+  margin-right: auto;
 }
 

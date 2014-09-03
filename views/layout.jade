@@ -1,0 +1,9 @@
+doctype html
+html
+  head
+    title= templateHeader.title
+    link(rel='stylesheet', href= templateHeader.css)
+  body
+    block content
+    div(class="page_footer")= templateHeader.footer1 
+    div(class="page_footer")!= templateHeader.footer2 

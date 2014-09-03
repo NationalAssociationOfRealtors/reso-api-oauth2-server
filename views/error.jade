@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  div(id='page_title')= page_title
+  div(id='page_body')
+    div(class='error_text')
+      div(class='error_highlight')= error_message
+      div= detail_message 
+      input(class='error_button' type='button' onclick='location.href=\".\"' value='Return')
+

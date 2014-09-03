@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  div(id='page_title')= page_title
+  div(id='page_body')
+    div(class='page_note')!= page_description
+    div(id='results_layout')
+      table(id='results_table')
+        tr
+          td(class='results_table_title') Name
+          td(class='results_table_value')= client_name
+            span(class='form_table_description') Subscribers will use this
+        tr
+          td(class='results_table_title') Grant Code 
+          td(class='results_table_value')= grant_code 
+        tr
+          td(class='results_table_title') client_id 
+          td(class='results_table_value')= client_id 
+        tr
+          td(class='results_table_title') client_secret 
+          td(class='results_table_value')= client_secret 
+        tr
+          td(class='results_table_title') reditect_uri 
+          td(class='results_table_value')= redirect_uri 
+      input(class='results_button' type='button' onclick='location.href=\".\"' value='Return')
+

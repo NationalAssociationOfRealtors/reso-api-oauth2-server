@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  div(id='page_body')
+    form(id='confirmation_form' name='input' action=post_url method='post')
+      table(id='confirmation_table')
+        tr
+          td(class='confirmation_text')= confirmation_text
+      input(type='hidden' name='client_id' value=client_id)
+      input(type='hidden' name='redirect_uri' value=redirect_uri)
+      input(class='yes_button' type='submit' value='YES')
+      input(class='no_button' type='button' onclick=denied_url value='NO')
+

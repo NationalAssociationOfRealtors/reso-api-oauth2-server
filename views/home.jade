@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  div(id='page_title')!= page_title
+  div(id='page_body')
+    div(id='main_menu')
+      div(class='menu_divider') Subscribers 
+      div(class='menu_item')
+        a(href='./grant_client') Grant Access for a RETS Web API Client
+      div(class='menu_item')
+        a(href='./register_onestep') "One Step" RETS Web API Client Registration
+      div(class='menu_divider') Vendors 
+      div(class='menu_item')
+        a(href='./register_client') Register a RETS Web API Client
