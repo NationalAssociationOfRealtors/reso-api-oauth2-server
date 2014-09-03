@@ -26,7 +26,7 @@ oauth2Server("./mySpecial.configuration");
 
 + Working Files
 
-You should copy the /public, /ssl and /templates (including content) from the
+You should copy the /public and /ssl (including content) from the
 /samples directory into the root directory.
 
 + Configuration File
