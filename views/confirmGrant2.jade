@@ -1,0 +1,18 @@
+doctype html
+html
+  head
+    title= templateHeader.title
+  body(style='height: 100%;margin: 0px;background: #ffffcc;font-family:"lucida grande",tahoma,verdana,arial,sans-serif;font-size: 16px;color: #444;')
+    div(style='margin: 0px auto 0px auto;padding-top: 40px;padding-bottom: 20px;font-size: 24px;text-align: center;')= page_title
+    div(style='margin: 0 auto 0 auto;padding-bottom: 40px;text-align: center')
+      form(style='margin: 40px auto 20px auto;padding: 10px 0px 10px 20px;border: 3px solid #999999;border-radius: 20px;background-color: #eeeeee; width: 400px;' name='input' action=post_url method='post')
+        table(style='padding-left: 10px;')
+          tr
+            td(style='padding-top: 20px;font-size: 18px;')= confirmation_text
+        input(type='hidden' name='client_id' value=client_id)
+        input(type='hidden' name='redirect_uri' value=redirect_uri)
+        input(style='font-size: 28px;margin: 20px 10px 20px auto;text-align: center;color: green;background-color: white;' type='submit' value='YES')
+        input(style='font-size: 28px;margin: 20px auto 20px 10px;text-align: center;color: red;background-color: white;' type='button' value='NO' onclick=denied_url)
+    div(style='margin: 0 auto 0 auto;font-size: 14px;text-align: center')!= templateHeader.footer1 
+    div(style='margin: 0 auto 0 auto;font-size: 14px;text-align: center')!= templateHeader.footer2 
+

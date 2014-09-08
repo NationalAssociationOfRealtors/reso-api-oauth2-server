@@ -1,6 +1,7 @@
 extends layout
 
 block content
+  div(id='page_title')= page_title
   div(id='page_body')
     form(id='confirmation_form' name='input' action=post_url method='post')
       table(id='confirmation_table')

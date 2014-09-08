@@ -8,7 +8,7 @@ html, body {
 }
 
 body {
-  background: #cccccc; /* Old browsers */
+  background: #ffffcc; /* Old browsers */
   background: -moz-linear-gradient(top,  #ffffcc 0%, #ffff99 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffcc), color-stop(100%,#ffff99)); /* Chrome,Safari4+ */
   background: -webkit-linear-gradient(top,  #ffffcc 0%,#ffff99 100%); /* Chrome10+,Safari5.1+ */
@@ -30,24 +30,20 @@ body {
   padding-bottom: 40px;
   font-size: 24px;
   text-align: center;
-  width: 700px;
 }
 #page_body {
-  margin: 0 auto 0 auto;
+  margin: 0px auto 0px auto;
   padding-bottom: 40px;
   text-align: center;
-  width: 700px;
 }
 .page_note {
-  margin: 0 auto 0 auto;
+  margin: 0px auto 0px auto;
   text-align: center;
-  width: 700px;
 }
 .page_footer {
-  margin: 0 auto 0 auto;
+  margin: 0px auto 0px auto
   font-size: 14px;
   text-align: center;
-  width: 700px;
 }
 
 /*
@@ -59,8 +55,7 @@ body {
   border: 3px solid #999999;
   border-radius: 20px;
   background-color: #eeeeee;
-  padding-top: 10px;
-  padding-bottom: 20px;
+  padding: 10px auto 20px auto;
 }
 .menu_divider {
   font-size: 18px;
@@ -68,7 +63,7 @@ body {
   padding-bottom: 10px;
 }
 .menu_item {
-  padding-left: 54px;
+  padding-left: 50px;
   padding-bottom: 10px;
   text-align: left;
 }
@@ -78,9 +73,7 @@ body {
 */
 #main_form {
   margin: 20px auto 20px auto;
-  padding-top: 20px;
-  padding-left: 20px;
-  padding-bottom: 20px;
+  padding: 20px 0px 20px 20px;
   border: 3px solid #999999;
   border-radius: 20px;
   background-color: #eeeeee;
@@ -88,10 +81,7 @@ body {
 }
 .form_button {
   font-size: 14px;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: 10px;
-  margin-bottom: 0px;
+  margin: 20px 10px 0px auto;
   text-align: center;
 }
 
@@ -125,20 +115,14 @@ body {
 */
 #results_layout {
   margin: 20px auto 20px auto;
-  padding-top: 10px;
-  padding-left: 10px;
-  padding-bottom: 10px;
-  padding-right: 10px;
+  padding: 10px 10px 10px 10px;
   border: 3px solid #999999;
   border-radius: 20px;
   background-color: #eeeeee;
   width: 640px;
 }
 #results_table {
-  margin-top: 20px;
-  margin-left: auto;
-  margin-bottom: 0px;
-  margin-right: auto;
+  margin: 20px auto 0px auto;
 }
 .results_table_title {
   width: 120px;
@@ -149,20 +133,15 @@ body {
 }
 .results_button {
   font-size: 14px;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-bottom: 0px;
-  margin-right: auto;
+  margin: 20px auto 0px auto;
 }
 
 /*
 * confirmation
 */
 #confirmation_form {
-  margin: 40px auto 20px auto;
-  padding-top: 10px;
-  padding-left: 20px;
-  padding-bottom: 10px;
+  margin: 20px auto 20px auto;
+  padding: 10px 0px 10px 20px;
   border: 3px solid #999999;
   border-radius: 20px;
   background-color: #eeeeee;
@@ -177,19 +156,14 @@ body {
 }
 .yes_button {
   font-size: 28px;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: 10px;
+  margin: 20px 10px 20px auto;
   text-align: center;
   color: green;
   background-color: white;
 }
 .no_button {
   font-size: 28px;
-  margin-top: 20px;
-  margin-left: 10px;
-  margin-bottom: 20px;
-  margin-right: auto;
+  margin: 20px auto 20px 10px;
   color: red;
   background-color: white;
 }
@@ -216,9 +190,6 @@ body {
 }
 .error_button {
   font-size: 14px;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-bottom: 10px;
-  margin-right: auto;
+  margin: 20px auto 10px auto;
 }
 

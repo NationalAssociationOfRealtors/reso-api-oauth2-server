@@ -43,6 +43,7 @@ function resoOAuth2(){
   var target = baseTarget(config);
   var applicationName = "RETS Web API OAuth2 Server";
   var cssFile = target + "/css/oauth2.css"; 
+//  var cssFile = openTarget(config) + "/css/oauth2.css"; 
   var footer1 = "An open source project of the Center for REALTOR&reg; Technology (CRT)"
   var footer2 = "Visit the <a href='http://crt.blogs.realtor.org'>CRT blog</a> for more technology projects";
   var templateHeader = {
@@ -55,7 +56,7 @@ function resoOAuth2(){
   app.get("/", function(req, res, next){
     res.render("home", { 
       templateHeader: templateHeader, 
-      page_title: "Welcome to the</br>RETS Web API OAuth2 Test Server" 
+      page_title: "Welcome to the</br>RETS Web API OAuth2 Server" 
     });
   });
 
@@ -370,8 +371,10 @@ log.info("New code - %s:%s:%s",usage_code,client.redirectURI,authorizedUser.user
     var post_url = target + "/oauth/auth_confirmed";
     var denied_url = "location.href='" + target + "/oauth/auth_denied" + "'";
     var confirmation_text = "Grant access to your Subscriber Account?";
-    res.render("confirmGrant", { 
+//    res.render("confirmGrant", { 
+    res.render("confirmGrant2", { 
       templateHeader: templateHeader, 
+      page_title: applicationName, 
       post_url: post_url,
       denied_url: denied_url,
       confirmation_text: confirmation_text, 
@@ -386,11 +389,17 @@ log.info("New code - %s:%s:%s",usage_code,client.redirectURI,authorizedUser.user
     if (config.get("encrypted_traffic")) {
       target = "https://";
     } else {
-      target = "https://";
+      target = "http://";
     }
     target += config.get("domain") + ":" + config.get("port");
     return target;
   }
+
+/*
+  function openTarget(config) {
+    return "http://" + config.get("domain") + ":" + config.get("port");
+  }
+*/
 
   app.post("/oauth/auth_confirmed", auth, function (req, res) {
 // http POST https://localhost:1340/oauth/auth response_type=code client_id=ez_reso redirect_uri=http://crt.realtors.org scope=optional state=optional --verify=no
