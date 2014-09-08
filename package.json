@@ -1,7 +1,7 @@
 {
   "name": "reso-api-oauth2-server",
   "description": "A RESO API OAuth2 Server",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "homepage": "http://crt.blogs.realtor.org",
   "author": {
     "name": "Center for REALTOR Technology",
@@ -25,7 +25,6 @@
     "faker": "1.1.0",
     "express": "4.8.4",
     "jade": "1.6.0",
-    "just.randomstring": "0.1.1",
     "mongoose": "3.8.14",
     "morgan": "1.2.2",
     "nconf": "0.6.9",

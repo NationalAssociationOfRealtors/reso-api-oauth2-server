@@ -1,13 +1,14 @@
-var AccessTokenModel		= require("./mongoose").AccessTokenModel;
-var AuthorizationCodeModel	= require("./mongoose").AuthorizationCodeModel;
-var ClientModel			= require("./mongoose").ClientModel;
-var config			= require("./config");
-var crypto			= require("crypto");
-var log				= require("./log")(module);
-var oauth2orize			= require("oauth2orize");
-var passport			= require("passport");
-var RefreshTokenModel		= require("./mongoose").RefreshTokenModel;
-var UserModel			= require("./mongoose").UserModel;
+
+var AccessTokenModel = require("./mongoose").AccessTokenModel
+  , AuthorizationCodeModel = require("./mongoose").AuthorizationCodeModel
+  , ClientModel	= require("./mongoose").ClientModel
+  , config = require("./config")
+  , crypto = require("crypto")
+  , log = require("./log")(module)
+  , oauth2orize = require("oauth2orize")
+  , passport = require("passport")
+  , RefreshTokenModel = require("./mongoose").RefreshTokenModel
+  , UserModel = require("./mongoose").UserModel;
 
 //
 // create OAuth 2.0 server
@@ -26,8 +27,8 @@ log.info("code: " + code + " is not registered");
       return done(null, false); 
     }
 
-    var tokenValue = crypto.randomBytes(32).toString("base64");
-    var refreshTokenValue = crypto.randomBytes(32).toString("base64");
+    var tokenValue = parseInt(crypto.randomBytes(16).toString("hex"), 16).toString(36);
+    var refreshTokenValue = parseInt(crypto.randomBytes(16).toString("hex"), 16).toString(36);
     var token = new AccessTokenModel({ token: tokenValue, clientId: client.clientId, userId: authCode.code });
     var refreshToken = new RefreshTokenModel({ token: refreshTokenValue, clientId: client.clientId, userId: authCode.code });
     refreshToken.save(function (err) {
@@ -96,8 +97,8 @@ server.exchange(oauth2orize.exchange.refreshToken(function(client, refreshToken,
         if (err) return done(err);
       });
 
-      var tokenValue = crypto.randomBytes(32).toString('base64');
-      var refreshTokenValue = crypto.randomBytes(32).toString('base64');
+      var tokenValue = parseInt(crypto.randomBytes(16).toString("hex"), 16).toString(36);
+      var refreshTokenValue = parseInt(crypto.randomBytes(16).toString("hex"), 16).toString(36);
       var token = new AccessTokenModel({ token: tokenValue, clientId: client.clientId, userId: user.userId });
       var refreshToken = new RefreshTokenModel({ token: refreshTokenValue, clientId: client.clientId, userId: user.userId });
         refreshToken.save(function (err) {

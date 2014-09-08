@@ -10,12 +10,11 @@ block content
           td(class='form_table_title') Client Name
           td(class='form_table_value')
             input(type="text" name="client_name")
-          td(class='form_table_description') something familiar for Subscribers
+            span(class='form_table_description') something familiar for Subscribers
         tr
           td(class='form_table_title') Redirect URI
           td(class='form_table_value')
-            input(type="text" name="redirect_uri")
-          td(class='form_table_description') where to go after authentication
+            input(class='form_table_wide_value' type="text" name="redirect_uri")
       input(class='form_button' type='submit' value='Submit')
       input(class='results_button' type='button' onclick='location.href=\".\"' value='Return')
 

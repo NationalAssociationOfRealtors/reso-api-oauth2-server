@@ -108,6 +108,10 @@ body {
 .form_table_value {
   text-align: left;
 }
+.form_table_wide_value {
+  width: 310px;
+  text-align: left;
+}
 .form_table_description {
   font-size: 12px;
   width: 300px;

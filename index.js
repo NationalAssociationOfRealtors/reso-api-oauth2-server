@@ -4,6 +4,7 @@ var AuthorizationCodeModel = require("./libs/mongoose").AuthorizationCodeModel
   , bodyParser = require("body-parser")
   , ClientModel	= require("./libs/mongoose").ClientModel
   , config = require("./libs/config")
+  , crypto = require("crypto")
   , express = require("express")
   , favicon = require('serve-favicon')
   , fs = require("fs")
@@ -13,7 +14,6 @@ var AuthorizationCodeModel = require("./libs/mongoose").AuthorizationCodeModel
   , oauth2 = require("./libs/oauth2")
   , path = require("path")
   , passport = require("passport")
-  , randomstring = require('just.randomstring')
   , validUrl = require("valid-url")
   , url	= require("url");
 
@@ -88,10 +88,10 @@ function resoOAuth2(){
     var authorizedUser = readAuthHeader(req.headers);
 
     var post_url = "./register_onestep";
-    res.render("registerOnestep", { 
+    res.render("registerClient", { 
       templateHeader: templateHeader, 
       page_title: "Register a RETS Web API Client",
-      page_description: "Use this form to make your RETS Web API Client available our Subscribers."
+      page_description: "Use this form to register and grant access to your RETS Web API Client."
     });
   });
 
@@ -101,10 +101,10 @@ function resoOAuth2(){
 //
 // client code and secret
 //
-    var client_id = randomstring(16);
-    var client_secret = randomstring(40);
+    var client_id = parseInt(crypto.randomBytes(4).toString("hex"), 16).toString(36);
+    var client_secret = parseInt(crypto.randomBytes(16).toString("hex"), 16).toString(36);
     var clientMap = { name:req.body.client_name,clientId:client_id,clientSecret:client_secret,redirectURI:req.body.redirect_uri };
-    var usage_code = randomstring(8);
+    var usage_code = parseInt(crypto.randomBytes(8).toString("hex"), 16).toString(36);
     var authorizationMap = { code:usage_code,redirectURI:req.body.redirect_uri,username:authorizedUser.userid,password:authorizedUser.password };
 
 //
@@ -224,8 +224,8 @@ log.info("New code - %s:%s:%s",authorizationCode.code,authorizationCode.redirect
 //
 // generate unique values for client_id and client_secret 
 //
-    var client_id = randomstring(16);
-    var client_secret = randomstring(40);
+    var client_id = parseInt(crypto.randomBytes(4).toString("hex"), 16).toString(36);
+    var client_secret = parseInt(crypto.randomBytes(16).toString("hex"), 16).toString(36);
     var clientMap = { name:req.body.client_name,clientId:client_id,clientSecret:client_secret,redirectURI:req.body.redirect_uri };
 
 //
@@ -279,7 +279,14 @@ log.info("New client - %s:%s:%s",client.clientId,client.clientSecret,client.redi
       if (err) return done(err);
       if (clients.length == 0) {
 log.info("Trying to register a URL when no API Clients have been defined yet");
-        formatNotice(res, target, "RETS Web API URL Registration Failed", "No RETS Web API Clients are Defined");
+        var err = "No RETS Web API Clients are Defined";
+        var title = "RETS Web API Client Grant Failed";
+        res.render("notice", { 
+          templateHeader: templateHeader, 
+          page_title: title,
+          notice: err 
+        });
+        return log.error(err);
       } else {
         var selectWidget = "<select name='client_id'>";
         clients.forEach(function(client) {
@@ -316,7 +323,7 @@ log.info("Reusing code - %s:%s:%s",authCode.code,authCode.redirectURI,authCode.u
               result = { name:client.name,code:authCode.code,client_id:client.clientId,client_secret:client.clientSecret,redirect_uri:authCode.redirectURI };
               formatPartialURLResult(res, result, "RETS Web API Client Already Enabled");
             } else {
-              var usage_code = randomstring(8);
+              var usage_code = parseInt(crypto.randomBytes(8).toString("hex"), 16).toString(36);
 log.info("New code - %s:%s:%s",usage_code,client.redirectURI,authorizedUser.userid);
               var authorizationMap = { code:usage_code,redirectURI:client.redirectURI,username:authorizedUser.userid,password:authorizedUser.password };
               var authorizationCode = new AuthorizationCodeModel(authorizationMap);
@@ -416,7 +423,7 @@ log.info("Reusing code - %s:%s:%s",authCode.code,authCode.redirectURI,authCode.u
               res.setHeader("Location", client.redirectURI + uriJoin + "code=" + authCode.code);
               res.send(result);
             } else {
-              var usage_code = randomstring(8);
+              var usage_code = parseInt(crypto.randomBytes(8).toString("hex"), 16).toString(36);
 log.info("New code - %s:%s:%s",usage_code,client.redirectURI,authorizedUser.userid);
               var authorizationMap = { code:usage_code,redirectURI:client.redirectURI,username:authorizedUser.userid,password:authorizedUser.password };
               var authorizationCode = new AuthorizationCodeModel(authorizationMap);
