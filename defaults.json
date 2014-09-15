@@ -1,11 +1,13 @@
 {
-  "port" : 1342,
+  "port" : 1340,
   "security": {
     "tokenLife" : 3600
   },
   "mongoose": {
     "uri": "mongodb://localhost/oauth"
   },
+  "server_name": "RETS Web API OAuth2 Server", 
+  "display_footer": "An open source project of the Center for REALTOR&reg; Technology (CRT)<br/>Visit the <a href='http://crt.blogs.realtor.org'>CRT blog</a> for more technology projects",
   "domain": "localhost", 
   "entry_point": "index.html", 
   "encrypted_traffic": true, 

@@ -23,18 +23,35 @@ function resoOAuth2(userConfig){
 // process config overrides if present
 //
   if (userConfig != null) {
-    config.set("port", userConfig["SERVER_PORT"]);
-    config.set("security:tokenLife", userConfig["TOKEN_EXPIRY"]);
-    config.set("mongoose:uri", userConfig["MONGOOSE_URI"]);
-    config.set("domain", userConfig["SERVER_DOMAIN"]);
-    config.set("certificate", userConfig["SERVER_CERTIFICATE"]);
-    config.set("key", userConfig["SERVER_KEY"]);
+    if (userConfig["DISPLAY_FOOTER"] != null) {
+      config.set("display_footer", userConfig["DISPLAY_FOOTER"]);
+    }
+    if (userConfig["DOMAIN"] != null) {
+      config.set("domain", userConfig["SERVER_DOMAIN"]);
+    }
+    if (userConfig["MONGOOSE_URI"] != null) {
+      config.set("mongoose:uri", userConfig["MONGOOSE_URI"]);
+    }
+    if (userConfig["SERVER_CERTIFICATE"] != null) {
+      config.set("certificate", userConfig["SERVER_CERTIFICATE"]);
+    }
+    if (userConfig["SERVER_KEY"] != null) {
+      config.set("key", userConfig["SERVER_KEY"]);
+    }
+    if (userConfig["SERVER_NAME"] != null) {
+      config.set("server_name", userConfig["SERVER_NAME"]);
+    }
+    if (userConfig["SERVER_PORT"] != null) {
+      config.set("port", userConfig["SERVER_PORT"]);
+    }
+    if (userConfig["TOKEN_EXPIRY"] != null) {
+      config.set("security:tokenLife", userConfig["TOKEN_EXPIRY"]);
+    }
   }                                       
   var app = express();
 
 //var pathToPublic = __dirname;
   var pathToPublic = ".";
-
   app.use(favicon(pathToPublic + '/public/images/reso.ico', { maxAge: 2592000000 }));
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
@@ -46,28 +63,25 @@ function resoOAuth2(userConfig){
 // jade
 //
   app.set('views', path.join(__dirname, 'views'));
-//  app.set('views', path.join(pathToPublic, 'views'));
   app.set("view engine", "jade");
   app.set("view options", {pretty:false});
 //  app.set("view options", {pretty:true});
 
   var target = baseTarget(config);
-  var applicationName = "RETS Web API OAuth2 Server";
+  var applicationName = config.get("server_name");
   var cssFile = target + "/css/oauth2.css"; 
 //  var cssFile = openTarget(config) + "/css/oauth2.css"; 
-  var footer1 = "An open source project of the Center for REALTOR&reg; Technology (CRT)"
-  var footer2 = "Visit the <a href='http://crt.blogs.realtor.org'>CRT blog</a> for more technology projects";
+  var footer = config.get("display_footer");
   var templateHeader = {
     applicationName: applicationName, 
     css: cssFile, 
-    footer1: footer1, 
-    footer2: footer2 
+    footer: footer
   }
 
   app.get("/", function(req, res, next){
     res.render("home", { 
       templateHeader: templateHeader, 
-      page_title: "Welcome to the</br>RETS Web API OAuth2 Server" 
+      page_title: "Welcome to the</br>" + applicationName 
     });
   });
 
@@ -76,7 +90,7 @@ function resoOAuth2(userConfig){
 //
   var auth = function (req, res, next) {
     function unauthorized(res) {
-      res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
+      res.set("WWW-Authenticate", 'Basic realm="' + applicationName + '"');
       return res.status(401).end();
     };
 
@@ -406,12 +420,6 @@ log.info("New code - %s:%s:%s",usage_code,client.redirectURI,authorizedUser.user
     return target;
   }
 
-/*
-  function openTarget(config) {
-    return "http://" + config.get("domain") + ":" + config.get("port");
-  }
-*/
-
   app.post("/oauth/auth_confirmed", auth, function (req, res) {
 // http POST https://localhost:1340/oauth/auth response_type=code client_id=ez_reso redirect_uri=http://crt.realtors.org scope=optional state=optional --verify=no
     var authorizedUser = readAuthHeader(req.headers);
@@ -624,10 +632,10 @@ log.info("New code - %s:%s:%s",usage_code,client.redirectURI,authorizedUser.user
     var credentials = {key: privateKey, cert: certificate};
     var httpsServer = https.createServer(credentials, app);
     httpsServer.listen(config.get("port"));
-log.info("RETS Web API OAuth2 Server listening on port " + config.get("port") + " with HTTPS");
+log.info(applicationName + " listening on port " + config.get("port") + " with HTTPS");
   } else {
     app.listen(config.get("port"), function(){
-log.info("RETS Web API OAuth2 Server listening on port " + config.get("port") + " with HTTP");
+log.info(applicationName + " listening on port " + config.get("port") + " with HTTP");
     });
   }
 

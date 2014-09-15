@@ -25,7 +25,7 @@ The following procedure should be followed to setup the server:
  
 + Create Working Files
 
-You should copy the /public, /views and /ssl (including content) from the /samples directory into the root directory.
+You should copy the /public and /ssl (including content) from the /samples directory into the root directory.
 
 + Create a configuration file or use the sample file supplied by the distribution:
 
@@ -61,6 +61,12 @@ The following parameters are found in the configuration file:
   LISTENING_DOMAIN: The dns name of the the computer that will be running the RESO OAuth2 Server.  
 
   LISTENING_PORT: The port that the RESO OAuth2 Server will be listening on.
+
++ White Label 
+
+  DISPLAY_FOOTER: HTML that appears at the bottom of eac page.  If no value is givern, a default message appears.
+
+  SERVER_NAME: Name that appears through the HTML title tag and other places that require a server name.  If no value is givern, a default name appears.
 
 + Data Processing 
 
