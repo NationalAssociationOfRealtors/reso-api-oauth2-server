@@ -17,8 +17,19 @@ var AuthorizationCodeModel = require("./libs/mongoose").AuthorizationCodeModel
   , validUrl = require("valid-url")
   , url	= require("url");
 
-function resoOAuth2(){   
+function resoOAuth2(userConfig){   
 
+//
+// process config overrides if present
+//
+  if (userConfig != null) {
+    config.set("port", userConfig["SERVER_PORT"]);
+    config.set("security:tokenLife", userConfig["TOKEN_EXPIRY"]);
+    config.set("mongoose:uri", userConfig["MONGOOSE_URI"]);
+    config.set("domain", userConfig["SERVER_DOMAIN"]);
+    config.set("certificate", userConfig["SERVER_CERTIFICATE"]);
+    config.set("key", userConfig["SERVER_KEY"]);
+  }                                       
   var app = express();
 
 //var pathToPublic = __dirname;

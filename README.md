@@ -2,70 +2,79 @@
 reso-api-oauth2-server
 =======
 
-The RESO API OAuth2 Server provides authentication services for a RESO 
-API Server.  
+The RESO API OAuth2 Server provides authentication services for a RESO API Server.  
 
 ### Operation 
 
-The RESO API OAuth2 Server can be run from the command line with the
-following command:
+The RESO API OAuth2 Server can be run from Javascript with the following:
 
 ```javascript
 var oauth2Server=require("reso-api-oauth2-server");
 oauth2Server();
 ```
-The resoReverseProxy() function takes an optional argument to specify the 
-configuration file.  The default for this argument is "./oauth2.conf".  An
-example of overriding the default name is:
 
-```javascript
-var oauth2Server=require("reso-api-oauth2-server");
-oauth2Server("./mySpecial.configuration");
-```
+### Setup 
+
+The following procedure should be followed to setup the server:
+
++ Install server using NPM:
+
+ ```shell
+  npm install reso-api-oauth2-server
+ ```
+ 
++ Create Working Files
+
+You should copy the /public, /views and /ssl (including content) from the /samples directory into the root directory.
+
++ Create a configuration file or use the sample file supplied by the distribution:
+
+ ```shell
+  cp ../node_modules/reso-api-oauth2-server/samples/service.conf . 
+ ```
+
++ Configure the server using the guide below in the **Configuration** section.
+
++ Create an execution javascript file for node.js or use the test file supplied by the distribution:
+
+ ```shell
+  cp ./node_modules/reso-api-oauth2-server/test.js .
+ ```
+
++ Run the server:
+
+ ```shell
+  node test.js
+ ```
+
 ### Configuration 
 
-+ Working Files
-
-You should copy the /public and /ssl (including content) from the
-/samples directory into the root directory.
-
-+ Configuration File
-
 A text configuration file should be located in the root directory of your
-project.  The default name of the file is "oauth2.conf", but this name can
-be overriden when calling the resoOAuth2() method.  A sample of the 
-configuration file called "oauth2.conf" can be found in the samples directory 
+project.  The default name of the file is "service.conf".  A sample of the 
+configuration file called "service.conf" can be found in the samples directory 
 of this distribution.  
 
 The following parameters are found in the configuration file:
 
-LISTENING_DOMAIN: The dns name of the the computer that will be 
-running the RESO API Reverse Proxy.  
++ OAuth2 Service
 
-LISTENING_PORT: The port that the RESO API Reverse Proxy will be 
-listening on.
+  LISTENING_DOMAIN: The dns name of the the computer that will be running the RESO OAuth2 Server.  
 
-LISTEN_LATENCY: The built-in delay used to ensure that all information 
-from the RESO API Server is read completely.
+  LISTENING_PORT: The port that the RESO OAuth2 Server will be listening on.
 
-CACHE_LATENCY: The number for seconds that the browser will retain
-query results.  If you have a high volume site, you can set this to something
-like 3600 to to only hit the RESO API Server hourly.  Setting this to a low
-number, such as 1, would provide near real time access to listing data.
++ Data Processing 
 
-API_DOMAIN: The dns name of the the computer that will be running the 
-RESO API Server.
+  MONGOOSE_URI: The URI of the underlying MongoDB database.
 
-API_PORT: The port that the RESO API Server will be listening on.
++ HTTPS Certificates 
 
-API_PROTOCOL: The protocol that the RESO API Server is using.  Valid
-values are "http" or "https".
+ SERVER\_CERTIFICATE: The path to the file that contains the server's certficate.
 
-ACCOUNT: The name of the subscriber account to use with the RESO API
-Server.  
+ SERVER\_KEY: The path to the file that contains the server's secret key.
 
-PASSWORD: The secret value to be used the subscriber account when 
-accessing the RESO API Server.  
++ Authentication 
+
+  TOKEN_EXPIRY: The number of seconds that a generated token will be valid.
 
 ### License
 

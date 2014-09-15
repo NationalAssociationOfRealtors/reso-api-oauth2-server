@@ -2,7 +2,7 @@ var nconf = require('nconf');
 
 nconf.argv()
     .env()
-    .file({ file: "./oauth2.json" });
+    .file({ file: __dirname + "/../defaults.json" });
 
 //
 // Exports
