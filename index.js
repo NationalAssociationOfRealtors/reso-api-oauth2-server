@@ -396,8 +396,7 @@ log.info("New code - %s:%s:%s",usage_code,client.redirectURI,authorizedUser.user
     var post_url = target + "/oauth/auth_confirmed";
     var denied_url = "location.href='" + target + "/oauth/auth_denied" + "'";
     var confirmation_text = "Grant access to your Subscriber Account?";
-//    res.render("confirmGrant", { 
-    res.render("confirmGrant2", { 
+    res.render("confirmGrant", { 
       templateHeader: templateHeader, 
       page_title: applicationName, 
       post_url: post_url,
