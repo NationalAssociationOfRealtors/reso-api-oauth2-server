@@ -69,8 +69,7 @@ function resoOAuth2(userConfig){
 
   var target = baseTarget(config);
   var applicationName = config.get("server_name");
-  var cssFile = target + "/css/oauth2.css"; 
-//  var cssFile = openTarget(config) + "/css/oauth2.css"; 
+  var cssFile = target + "/css/oauth2.css?"; 
   var footer = config.get("display_footer");
   var templateHeader = {
     applicationName: applicationName, 
