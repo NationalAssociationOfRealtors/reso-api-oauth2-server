@@ -57,7 +57,18 @@ function resoOAuth2(userConfig){
   app.use(bodyParser.json());
   app.use(morgan("dev")); // log all requests
   app.use(passport.initialize()); // needed to enable OAuth2 middleware
-  app.use(express.static(path.join(pathToPublic, "public")));
+
+//
+// static files
+//
+  var staticOptions = {
+    dotfiles: 'ignore',
+    etag: false,
+    index: false,
+    lastModified: false,
+    redirect: false,
+  };
+  app.use(express.static(path.join(pathToPublic, "public"), staticOptions));
 
 //
 // jade
@@ -69,7 +80,7 @@ function resoOAuth2(userConfig){
 
   var target = baseTarget(config);
   var applicationName = config.get("server_name");
-  var cssFile = target + "/css/oauth2.css?"; 
+  var cssFile = target + "/css/oauth2.css"; 
   var footer = config.get("display_footer");
   var templateHeader = {
     applicationName: applicationName, 
@@ -87,6 +98,13 @@ function resoOAuth2(userConfig){
 //
 // authentication
 //
+  var lookupUserPassword = function(username) {
+    if (username == "admin"){
+      return "admin";
+    }
+    return false;
+  }
+
   var auth = function (req, res, next) {
     function unauthorized(res) {
       res.set("WWW-Authenticate", 'Basic realm="' + applicationName + '"');
@@ -99,12 +117,23 @@ function resoOAuth2(userConfig){
       return unauthorized(res);
     };
 
-    if (user.name === "test" && user.pass === "testpass") {
-      return next();
-    } else {
-      return unauthorized(res);
-    };
+//    if (user.name === "test" && user.pass === "testpass") {
+//    } else {
+//      return unauthorized(res);
+//    };
+    var checkPass = lookupUserPassword(user.name);
+    if (checkPass) {
+      if (checkPass == user.pass) {
+        return next();
+      }
+    }
+    return unauthorized(res);
   };
+
+  app.post("/authUser", function (req, res) {
+    res.status(200);
+    res.send({ user_pass: lookupUserPassword(req.body.user_name)});
+  });
 
 //
 // Register OneStep 
@@ -385,18 +414,53 @@ log.info("New code - %s:%s:%s",usage_code,client.redirectURI,authorizedUser.user
     res.send("Subscriber has denied access");
   });
 
+/*
+  function nocache(req, res, next) {
+    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    res.header('Expires', '-1');
+    res.header('Pragma', 'no-cache');
+    next();
+  }
+
+//--------
+//  app.get("/oauth/auth", auth, nocache, function (req, res) {
+  app.get("/oauth/auth", auth, function (req, res) {
+    var authorizedUser = readAuthHeader(req.headers);
+    var post_url = target + "/oauth/auth_confirmed";
+    var denied_url = "location.href='" + target + "/oauth/auth_denied" + "'";
+    var confirmation_text = "Grant access to your Subscriber Account?";
+    var nocacheTemplateHeader = {
+      applicationName: config.get("server_name"),
+      footer: config.get("display_footer")
+    }
+//    res.render("confirmGrant", { 
+//      templateHeader: templateHeader, 
+    res.render("confirmGrant2", { 
+      templateHeader: nocacheTemplateHeader, 
+      page_title: applicationName, 
+      post_url: post_url,
+      denied_url: denied_url,
+      confirmation_text: confirmation_text, 
+      client_id: req.body.client_id, 
+      redirect_uri: req.body.redirect_uri 
+    });
+  });
+//--------
+*/
+
   app.post("/oauth/auth", auth, function (req, res) {
 // http POST https://localhost:1340/oauth/auth response_type=code client_id=ez_reso redirect_uri=http://crt.realtors.org scope=optional state=optional --verify=no
     var authorizedUser = readAuthHeader(req.headers);
 
-//console.dir(req.body.client_id);
-//console.dir(req.body.redirect_uri);
-
     var post_url = target + "/oauth/auth_confirmed";
     var denied_url = "location.href='" + target + "/oauth/auth_denied" + "'";
     var confirmation_text = "Grant access to your Subscriber Account?";
-    res.render("confirmGrant", { 
-      templateHeader: templateHeader, 
+    var nocacheTemplateHeader = {
+      applicationName: config.get("server_name"),
+      footer: config.get("display_footer")
+    }
+    res.render("confirmGrant2", { 
+      templateHeader: nocacheTemplateHeader, 
       page_title: applicationName, 
       post_url: post_url,
       denied_url: denied_url,
@@ -406,6 +470,36 @@ log.info("New code - %s:%s:%s",usage_code,client.redirectURI,authorizedUser.user
     });
 
   });
+
+/*
+  app.post("/oauth/auth", auth, function (req, res) {
+// http POST https://localhost:1340/oauth/auth response_type=code client_id=ez_reso redirect_uri=http://crt.realtors.org scope=optional state=optional --verify=no
+    var authorizedUser = readAuthHeader(req.headers);
+    res.redirect(target + "/oauth/auth_form?redirect_uri=" + req.body.redirect_uri + "&client_id=" + req.body.client_id);
+  });
+
+  app.get("/oauth/auth_form", auth, function (req, res) {
+// http POST https://localhost:1340/oauth/auth response_type=code client_id=ez_reso redirect_uri=http://crt.realtors.org scope=optional state=optional --verify=no
+    var authorizedUser = readAuthHeader(req.headers);
+
+    var post_url = target + "/oauth/auth_confirmed";
+    var denied_url = "location.href='" + target + "/oauth/auth_denied" + "'";
+    var confirmation_text = "Grant access to your Subscriber Account?";
+    var nocacheTemplateHeader = {
+      applicationName: config.get("server_name"),
+      footer: config.get("display_footer")
+    }
+    res.render("confirmGrant", { 
+      templateHeader: templateHeader, 
+      page_title: applicationName, 
+      post_url: post_url,
+      denied_url: denied_url,
+      confirmation_text: confirmation_text, 
+      client_id: req.query.client_id, 
+      redirect_uri: req.query.redirect_uri 
+    });
+  });
+*/
 
   function baseTarget(config) {
     var target;
@@ -444,10 +538,11 @@ log.info("Looking for client - %s",req.body.client_id);
 
             if (authCode) {
 log.info("Reusing code - %s:%s:%s",authCode.code,authCode.redirectURI,authCode.username);
-              result = { code:authCode.code };
-              res.status(302);
-              res.setHeader("Location", client.redirectURI + uriJoin + "code=" + authCode.code);
-              res.send(result);
+//              result = { code:authCode.code };
+//              res.status(302);
+//              res.setHeader("Location", client.redirectURI + uriJoin + "code=" + authCode.code);
+//              res.send(result);
+              res.redirect(client.redirectURI + uriJoin + "code=" + authCode.code);
             } else {
               var usage_code = parseInt(crypto.randomBytes(8).toString("hex"), 16).toString(36);
 log.info("New code - %s:%s:%s",usage_code,client.redirectURI,authorizedUser.userid);
@@ -457,15 +552,14 @@ log.info("New code - %s:%s:%s",usage_code,client.redirectURI,authorizedUser.user
                 if(err) { 
                   formatError(res, err, authorizationMap);
                   var errorMap = { "error":"invalid_client", "error_description":"Can't get information about this clientId: Not Found" };
-                  res.status(302);
-                  res.setHeader("Location", client.redirectURI);
                   res.send(errorMap);
                   return log.error(err);
                 } else {
-                  result = { code:usage_code };
-                  res.status(302);
-                  res.setHeader("Location", client.redirectURI + uriJoin + "code=" + usage_code);
-                  res.send(result);
+//                  result = { code:usage_code };
+//                  res.status(302);
+//                  res.setHeader("Location", client.redirectURI + uriJoin + "code=" + usage_code);
+//                  res.send(result);
+                  res.redirect(client.redirectURI + uriJoin + "code=" + authCode.code);
                 }
               });
             } 
