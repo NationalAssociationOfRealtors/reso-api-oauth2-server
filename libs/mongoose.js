@@ -81,27 +81,32 @@ var User = new Schema({
     unique: true,
     required: true
   },
-  hashedPassword: {
+  password: {
     type: String,
     required: true
   },
-  salt: {
-    type: String,
-    required: true
-  },
+//  hashedPassword: {
+//    type: String,
+//    required: true
+//  },
+//  salt: {
+//    type: String,
+//    required: true
+//  },
   created: {
     type: Date,
     default: Date.now
   }
 });
 
+User.virtual("userId")
+  .get(function () { return this.id; });
+
+/*
 User.methods.encryptPassword = function(password) {
   return crypto.createHmac("sha1", this.salt).update(password).digest("hex");
   //more secure - return crypto.pbkdf2Sync(password, this.salt, 10000, 512);
 };
-
-User.virtual("userId")
-  .get(function () { return this.id; });
 
 User.virtual("password")
   .set(function(password) {
@@ -115,6 +120,7 @@ User.virtual("password")
 User.methods.checkPassword = function(password) {
   return this.encryptPassword(password) === this.hashedPassword;
 };
+*/
 
 var UserModel = mongoose.model("User", User);
 

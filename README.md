@@ -2,7 +2,7 @@
 reso-api-oauth2-server
 =======
 
-The RESO API OAuth2 Server provides authentication services for a RESO API Server.  
+The RESO API OAuth2 Server provides authentication and authorization services for a RESO API Server.  The server features separate Admin and External interfaces so that firewalls can keep the services separate.  Authentication is targeted at end user credentials.  Authroization is targeted at giving others the right to use your credential.
 
 ### Operation 
 
@@ -12,6 +12,15 @@ The RESO API OAuth2 Server can be run from Javascript with the following:
 var oauth2Server=require("reso-api-oauth2-server");
 oauth2Server();
 ```
+All communications are carried out with HTTPS.
+
++ OAuth2 Service
+
+  This service is intended to provide OAuth2 authorization facilities to RETS Web API Clients and Servers.  Typically, the domain and port are configured to allow outside access to the OAuth2 Service.  In the configuration file, the parameters that control this are called EXTERNAL_DOMAIN and EXTERNAL_PORT.  The authorization service has been tested against the Open Source RESO Web API Server.
+
++ Admin Service
+
+  This service is intended to provide authentication and administrative facilities to RETS Web API Servers.  Typically, the domain and port are configured to only allow inside access to the Admin Service.  In the configuration file, the parameters that control this are called ADMIN_DOMAIN and ADMIN_PORT.  The authentication service has been tested against the Open Source RESO Web API Server which uses this server to perform its Digest or Basic authenticatin process.  The administrative capabilites include CRUD functions for accounts.
 
 ### Setup 
 
@@ -56,11 +65,17 @@ of this distribution.
 
 The following parameters are found in the configuration file:
 
++ Admin Service
+
+  ADMIN_DOMAIN: The dns name of the the computer that will be running the Admin iinterface to the RESO OAuth2 Server.  
+
+  ADMIN_PORT: The port that the Admin interface to the RESO OAuth2 Server will be listening on.
+
 + OAuth2 Service
 
-  LISTENING_DOMAIN: The dns name of the the computer that will be running the RESO OAuth2 Server.  
+  EXTERNAL_DOMAIN: The dns name of the the computer that will be running the RESO OAuth2 Server.  
 
-  LISTENING_PORT: The port that the RESO OAuth2 Server will be listening on.
+  EXTERNAL_PORT: The port that the RESO OAuth2 Server will be listening on.
 
 + White Label 
 

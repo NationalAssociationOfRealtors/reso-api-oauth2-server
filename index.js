@@ -2,7 +2,7 @@
 var AuthorizationCodeModel = require("./libs/mongoose").AuthorizationCodeModel
   , basicAuth = require('basic-auth')
   , bodyParser = require("body-parser")
-  , ClientModel	= require("./libs/mongoose").ClientModel
+  , ClientModel = require("./libs/mongoose").ClientModel
   , config = require("./libs/config")
   , crypto = require("crypto")
   , express = require("express")
@@ -15,7 +15,8 @@ var AuthorizationCodeModel = require("./libs/mongoose").AuthorizationCodeModel
   , path = require("path")
   , passport = require("passport")
   , validUrl = require("valid-url")
-  , url	= require("url");
+  , url	= require("url")
+  , UserModel = require("./libs/mongoose").UserModel;
 
 function resoOAuth2(userConfig){   
 
@@ -23,11 +24,20 @@ function resoOAuth2(userConfig){
 // process config overrides if present
 //
   if (userConfig != null) {
+    if (userConfig["ADMIN_DOMAIN"] != null) {
+      config.set("admin_domain", userConfig["ADMIN_DOMAIN"]);
+    }
+    if (userConfig["ADMIN_PORT"] != null) {
+      config.set("admin_port", userConfig["ADMIN_PORT"]);
+    }
     if (userConfig["DISPLAY_FOOTER"] != null) {
       config.set("display_footer", userConfig["DISPLAY_FOOTER"]);
     }
-    if (userConfig["DOMAIN"] != null) {
-      config.set("domain", userConfig["SERVER_DOMAIN"]);
+    if (userConfig["EXTERNAL_DOMAIN"] != null) {
+      config.set("external_domain", userConfig["EXTERNAL_DOMAIN"]);
+    }
+    if (userConfig["EXTERNAL_PORT"] != null) {
+      config.set("external_port", userConfig["EXTERNAL_PORT"]);
     }
     if (userConfig["MONGOOSE_URI"] != null) {
       config.set("mongoose:uri", userConfig["MONGOOSE_URI"]);
@@ -41,22 +51,19 @@ function resoOAuth2(userConfig){
     if (userConfig["SERVER_NAME"] != null) {
       config.set("server_name", userConfig["SERVER_NAME"]);
     }
-    if (userConfig["SERVER_PORT"] != null) {
-      config.set("port", userConfig["SERVER_PORT"]);
-    }
     if (userConfig["TOKEN_EXPIRY"] != null) {
       config.set("security:tokenLife", userConfig["TOKEN_EXPIRY"]);
     }
-  }                                       
-  var app = express();
+  }
 
+//
+// shared settings
+//
 //var pathToPublic = __dirname;
   var pathToPublic = ".";
-  app.use(favicon(pathToPublic + '/public/images/reso.ico', { maxAge: 2592000000 }));
-  app.use(bodyParser.urlencoded({ extended: false }));
-  app.use(bodyParser.json());
-  app.use(morgan("dev")); // log all requests
-  app.use(passport.initialize()); // needed to enable OAuth2 middleware
+  var anIcon = favicon(pathToPublic + '/public/images/reso.ico', { maxAge: 2592000000 });
+  var applicationName = config.get("server_name");
+  var footer = config.get("display_footer");
 
 //
 // static files
@@ -68,23 +75,38 @@ function resoOAuth2(userConfig){
     lastModified: false,
     redirect: false,
   };
-  app.use(express.static(path.join(pathToPublic, "public"), staticOptions));
 
 //
-// jade
-//
+// external interface 
+//                                       
+  var app = express();
+//  app.use(favicon(pathToPublic + '/public/images/reso.ico', { maxAge: 2592000000 }));
+  app.use(anIcon);
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json());
+  app.use(morgan("dev")); // log all requests
+  app.use(passport.initialize()); // needed to enable OAuth2 middleware
+  app.use(express.static(path.join(pathToPublic, "public"), staticOptions));
   app.set('views', path.join(__dirname, 'views'));
   app.set("view engine", "jade");
   app.set("view options", {pretty:false});
 //  app.set("view options", {pretty:true});
 
+  function baseTarget(config) {
+    var target;
+    if (config.get("external_encrypted_traffic")) {
+      target = "https://";
+    } else {
+      target = "http://";
+    }
+    target += config.get("external_domain") + ":" + config.get("external_port");
+    return target;
+  }
+
   var target = baseTarget(config);
-  var applicationName = config.get("server_name");
-  var cssFile = target + "/css/oauth2.css"; 
-  var footer = config.get("display_footer");
   var templateHeader = {
     applicationName: applicationName, 
-    css: cssFile, 
+    css: target + "/css/oauth2.css",
     footer: footer
   }
 
@@ -95,45 +117,88 @@ function resoOAuth2(userConfig){
     });
   });
 
+
+//
+// administrative interface 
+//                                       
+  var admin_app = express();
+  admin_app.use(anIcon);
+  admin_app.use(bodyParser.urlencoded({ extended: false }));
+  admin_app.use(bodyParser.json());
+  admin_app.use(morgan("dev")); // log all requests
+  admin_app.use(express.static(path.join(pathToPublic, "public"), staticOptions));
+  admin_app.set('views', path.join(__dirname, 'views'));
+  admin_app.set("view engine", "jade");
+  admin_app.set("view options", {pretty:false});
+//  admin_app.set("view options", {pretty:true});
+
+  function admin_baseTarget(config) {
+    var target;
+    if (config.get("admin_encrypted_traffic")) {
+      target = "https://";
+    } else {
+      target = "http://";
+    }
+    target += config.get("admin_domain") + ":" + config.get("admin_port");
+    return target;
+  }
+
+  var admin_target = admin_baseTarget(config);
+  var admin_templateHeader = {
+    applicationName: applicationName, 
+    css: admin_target + "/css/oauth2.css",
+    footer: footer
+  }
+
+  admin_app.get("/", function(req, res, next){
+    res.render("admin_home", { 
+      templateHeader: admin_templateHeader, 
+      page_title: "Administration for</br>" + applicationName 
+    });
+  });
+
+  admin_app.post("/authUser", function (req, res) {
+
+    function sendUserPassword(username, res) {
+      UserModel.findOne({ username: username }, function(err, user) {
+        if (err) { console.dir(err);return false; }
+        if (!user) { return false; }
+        res.status(200);
+        res.send({ user_pass: user.password });
+      });
+    }
+
+    sendUserPassword(req.body.user_name, res);
+  });
+
 //
 // authentication
 //
-  var lookupUserPassword = function(username) {
-    if (username == "admin"){
-      return "admin";
-    }
-    return false;
-  }
-
   var auth = function (req, res, next) {
+
     function unauthorized(res) {
       res.set("WWW-Authenticate", 'Basic realm="' + applicationName + '"');
       return res.status(401).end();
     };
 
-    var user = basicAuth(req);
+    function lookupUserPassword(username, userpassword, res, next) {
+      UserModel.findOne({ username: username }, function(err, user) {
+        if (err) { console.dir(err);return false; }
+        if (!user) { return false; }
+        if (user.password == userpassword) {
+          return next();
+        }
+        return unauthorized(res);
+      });
+    }
 
+    var user = basicAuth(req);
     if (!user || !user.name || !user.pass) {
       return unauthorized(res);
     };
 
-//    if (user.name === "test" && user.pass === "testpass") {
-//    } else {
-//      return unauthorized(res);
-//    };
-    var checkPass = lookupUserPassword(user.name);
-    if (checkPass) {
-      if (checkPass == user.pass) {
-        return next();
-      }
-    }
-    return unauthorized(res);
+    lookupUserPassword(user.name, user.pass, res, next);
   };
-
-  app.post("/authUser", function (req, res) {
-    res.status(200);
-    res.send({ user_pass: lookupUserPassword(req.body.user_name)});
-  });
 
 //
 // Register OneStep 
@@ -501,17 +566,6 @@ log.info("New code - %s:%s:%s",usage_code,client.redirectURI,authorizedUser.user
   });
 */
 
-  function baseTarget(config) {
-    var target;
-    if (config.get("encrypted_traffic")) {
-      target = "https://";
-    } else {
-      target = "http://";
-    }
-    target += config.get("domain") + ":" + config.get("port");
-    return target;
-  }
-
   app.post("/oauth/auth_confirmed", auth, function (req, res) {
 // http POST https://localhost:1340/oauth/auth response_type=code client_id=ez_reso redirect_uri=http://crt.realtors.org scope=optional state=optional --verify=no
     var authorizedUser = readAuthHeader(req.headers);
@@ -545,7 +599,7 @@ log.info("Reusing code - %s:%s:%s",authCode.code,authCode.redirectURI,authCode.u
               res.redirect(client.redirectURI + uriJoin + "code=" + authCode.code);
             } else {
               var usage_code = parseInt(crypto.randomBytes(8).toString("hex"), 16).toString(36);
-log.info("New code - %s:%s:%s",usage_code,client.redirectURI,authorizedUser.userid);
+log.info("New code - %s:%s:%s:%s",usage_code,client.redirectURI,authorizedUser.userid,authorizedUser.password);
               var authorizationMap = { code:usage_code,redirectURI:client.redirectURI,username:authorizedUser.userid,password:authorizedUser.password };
               var authorizationCode = new AuthorizationCodeModel(authorizationMap);
               authorizationCode.save(function(err, authorizationCode) {
@@ -555,11 +609,7 @@ log.info("New code - %s:%s:%s",usage_code,client.redirectURI,authorizedUser.user
                   res.send(errorMap);
                   return log.error(err);
                 } else {
-//                  result = { code:usage_code };
-//                  res.status(302);
-//                  res.setHeader("Location", client.redirectURI + uriJoin + "code=" + usage_code);
-//                  res.send(result);
-                  res.redirect(client.redirectURI + uriJoin + "code=" + authCode.code);
+                  res.redirect(client.redirectURI + uriJoin + "code=" + usage_code);
                 }
               });
             } 
@@ -716,18 +766,36 @@ log.info("New code - %s:%s:%s",usage_code,client.redirectURI,authorizedUser.user
   }
 
 //
-// start server
+// start servers
 //
-  if (config.get("encrypted_traffic")) {
+log.info(applicationName);
+log.info("  External Interface");
+log.info("    listening on " + config.get("external_domain") + ", port " + config.get("external_port"));
+  if (config.get("external_encrypted_traffic")) {
     var privateKey = fs.readFileSync(config.get("key"), "utf8");
     var certificate = fs.readFileSync(config.get("certificate"), "utf8");
     var credentials = {key: privateKey, cert: certificate};
-    var httpsServer = https.createServer(credentials, app);
-    httpsServer.listen(config.get("port"));
-log.info(applicationName + " listening on port " + config.get("port") + " with HTTPS");
+    var external_httpsServer = https.createServer(credentials, app);
+    external_httpsServer.listen(config.get("external_port"), config.get("external_domain"));
+log.info("    with HTTPS");
   } else {
-    app.listen(config.get("port"), function(){
-log.info(applicationName + " listening on port " + config.get("port") + " with HTTP");
+    app.listen(config.get("external_port"), config.get("external_domain"), function(){
+log.info("    with HTTP");
+    });
+  }
+
+log.info("  Administraction Interface");
+log.info("    listening on " + config.get("admin_domain") + ", port " + config.get("admin_port"));
+  if (config.get("admin_encrypted_traffic")) {
+    var privateKey = fs.readFileSync(config.get("key"), "utf8");
+    var certificate = fs.readFileSync(config.get("certificate"), "utf8");
+    var credentials = {key: privateKey, cert: certificate};
+    var admin_httpsServer = https.createServer(credentials, app);
+    admin_httpsServer.listen(config.get("admin_port"), config.get("admin_domain"));
+log.info("    with HTTPS");
+  } else {
+    admin_app.listen(config.get("admin_port"), config.get("admin_domain"), function(){
+log.info("    with HTTP");
     });
   }
 

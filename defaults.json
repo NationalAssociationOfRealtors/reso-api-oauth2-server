@@ -1,5 +1,10 @@
 {
-  "port" : 1340,
+  "admin_port" : 1341,
+  "admin_domain": "localhost", 
+  "admin_encrypted_traffic": true, 
+  "external_port" : 1340,
+  "external_domain": "localhost", 
+  "external_encrypted_traffic": true, 
   "security": {
     "tokenLife" : 3600
   },
@@ -8,9 +13,7 @@
   },
   "server_name": "RETS Web API OAuth2 Server", 
   "display_footer": "An open source project of the Center for REALTOR&reg; Technology (CRT)<br/>Visit the <a href='http://crt.blogs.realtor.org'>CRT blog</a> for more technology projects",
-  "domain": "localhost", 
   "entry_point": "index.html", 
-  "encrypted_traffic": true, 
   "certificate": "./ssl/server.crt",
   "key": "./ssl/server.key"
 }

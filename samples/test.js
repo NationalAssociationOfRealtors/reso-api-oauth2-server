@@ -61,4 +61,5 @@ console.log("Using configuration file " + aConfigFile);
 function startServer(userConfig) {
   var oauth2Server=require("reso-api-oauth2-server");
   oauth2Server(userConfig);   
+//  oauth2Server();   
 }

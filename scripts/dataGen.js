@@ -31,7 +31,7 @@ AuthorizationCodeModel.remove({}, function(err) {
 });
 
 UserModel.remove({}, function(err) {
-  var user = new UserModel({ username: "andrey", password: "simplepassword" });
+  var user = new UserModel({ username: "andrey", password: "mooseman" });
   user.save(function(err, user) {
     if(err) return log.error(err);
     else log.info("New user - %s:%s",user.username,user.password);
