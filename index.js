@@ -790,7 +790,7 @@ log.info("    listening on " + config.get("admin_domain") + ", port " + config.g
     var privateKey = fs.readFileSync(config.get("key"), "utf8");
     var certificate = fs.readFileSync(config.get("certificate"), "utf8");
     var credentials = {key: privateKey, cert: certificate};
-    var admin_httpsServer = https.createServer(credentials, app);
+    var admin_httpsServer = https.createServer(credentials, admin_app);
     admin_httpsServer.listen(config.get("admin_port"), config.get("admin_domain"));
 log.info("    with HTTPS");
   } else {
