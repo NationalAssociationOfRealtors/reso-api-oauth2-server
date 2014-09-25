@@ -31,17 +31,17 @@ AuthorizationCodeModel.remove({}, function(err) {
 });
 
 UserModel.remove({}, function(err) {
-  var user = new UserModel({ username: "andrey", password: "mooseman" });
+  var user = new UserModel({ username: "andrey", password: "mooseman", email: "andrey@realtors.org" });
   user.save(function(err, user) {
     if(err) return log.error(err);
-    else log.info("New user - %s:%s",user.username,user.password);
+    else log.info("New user - %s:%s:%s",user.username,user.password,user.email);
   });
 
   for(i=0; i<4; i++) {
-    var user = new UserModel({ username: faker.random.first_name().toLowerCase(), password: faker.Lorem.words(1)[0] });
+    var user = new UserModel({ username: faker.random.first_name().toLowerCase(), password: faker.Lorem.words(1)[0], email: faker.Internet.email() });
     user.save(function(err, user) {
       if(err) return log.error(err);
-      else log.info("New user - %s:%s",user.username,user.password);
+      else log.info("New user - %s:%s:%s",user.username,user.password,user.email);
     });
   }
 });
